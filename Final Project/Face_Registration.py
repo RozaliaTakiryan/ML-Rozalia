@@ -10,7 +10,7 @@ width, height = 320, 240
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
-face_cascade = cv2.CascadeClassifier('haar_cascade_file/haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('haar_cascade_files/haarcascade_frontalface_default.xml')
 
 name = input("Enter your name: ")
 
@@ -36,3 +36,20 @@ while True:
 
 		for face_encoding in face_encodings:
 			face_data.append({"name": name, "face": frame[y;y+h, x:x+w], "face_encoding": face_encoding, "access": access_list})
+	cv2.imshow('Register frame', frame)
+
+	if cv2.waitKey(1) & 0xFF == ord('s'):
+		capture_count += 1
+		print(f"Capture {capture_count} complete!")
+
+	if capture_count >= 5:
+		break
+
+cap.release()
+cv2.destroyAllWindows()
+
+now = datetime.now()
+file_name = f"faces/{now.strftime('%Y-%m-%d-%H-%M-%S')}-{name}.pickle"
+with open(file_name, 'wb') as f:
+	pickle.dump(face_data, f)
+print(f"Face data for '{name}' saved successfully!")
